@@ -1,3 +1,94 @@
+// server.js
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const WebSocket = require('ws');
+
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
+// In-memory store (for demo). You can replace with DB later.
+let roads = {
+  // example road id
+  "road-1": {
+    sensors: [],
+    congestion: false,
+    lastUpdate: null
+  }
+};
+
+// Simple logic: if more than N "vehicles" reported in window => congested
+const CONGESTION_THRESHOLD = 3; // tweak for demo
+
+// WebSocket server for pushing updates to clients (frontend)
+const server = require('http').createServer(app);
+const wss = new WebSocket.Server({ server });
+
+function broadcast(msg) {
+  const data = JSON.stringify(msg);
+  wss.clients.forEach(client => {
+    if (client.readyState === WebSocket.OPEN) client.send(data);
+  });
+}
+
+// Sensor data endpoint (sensors or simulator POST here)
+app.post('/api/sensor/:roadId', (req, res) => {
+  const roadId = req.params.roadId || 'road-1';
+  const payload = req.body; // e.g. { sensorId, type, distance, mq135, timestamp }
+  if (!roads[roadId]) {
+    roads[roadId] = { sensors: [], congestion: false, lastUpdate: null };
+  }
+  // Keep last N readings
+  roads[roadId].sensors.push(payload);
+  if (roads[roadId].sensors.length > 50) roads[roadId].sensors.shift();
+
+  // Simple detection: count readings where distance < threshold mean => vehicle density
+  const recent = roads[roadId].sensors.slice(-10);
+  const congestionCount = recent.filter(r => r.distance && r.distance < 50).length;
+  const isCongested = congestionCount >= CONGESTION_THRESHOLD;
+  roads[roadId].congestion = isCongested;
+  roads[roadId].lastUpdate = Date.now();
+
+  // Decide recommended route for vehicle types
+  // Emergency => RIGHT, Normal => LEFT (as per your rules)
+  const recommendation = {
+    roadId,
+    congestion: isCongested,
+    recommendedFor: {
+      emergency: 'right',
+      normal: 'left'
+    },
+    congestionCount,
+    timestamp: roads[roadId].lastUpdate
+  };
+
+  // Broadcast to connected frontends
+  broadcast({ type: 'update', data: recommendation });
+
+  res.json({ status: 'ok', recommendation });
+});
+
+// Endpoint for frontend to fetch status
+app.get('/api/status/:roadId', (req, res) => {
+  const roadId = req.params.roadId || 'road-1';
+  const info = roads[roadId] || { congestion: false, sensors: [], lastUpdate: null };
+  res.json(info);
+});
+
+// Traffic light control endpoint (simulated) - accepts commands
+app.post('/api/traffic-light/:id', (req, res) => {
+  const cmd = req.body; // e.g. { action: "setMode", mode: "prioritize_emergency" }
+  console.log('Traffic light command', req.params.id, cmd);
+  // NOTE: do NOT connect to real signals unless permitted
+  broadcast({ type: 'traffic-light-cmd', id: req.params.id, cmd });
+  res.json({ status: 'received', cmd });
+});
+
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => {
+  console.log(`Backend server running on http://localhost:${PORT}`);
+});
 node server.js
 // server.js
 const express = require('express');
@@ -181,5 +272,6 @@ function validateCode() {
         status.style.color = "red";
     }
 }
+
 
 
