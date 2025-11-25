@@ -163,3 +163,21 @@ function saveCodes() {
     localStorage.setItem("validCodes", JSON.stringify(validCodes));
 }
 
+function validateCode() {
+    let code = document.getElementById("vehicleCode").value.trim();
+    let status = document.getElementById("codeStatus");
+
+    if (validCodes[code]) {
+        let type = validCodes[code];
+        status.innerText = "Code accepted! Vehicle type: " + type;
+        status.style.color = "green";
+
+        if (type === "emergency") sendDirectionToESP("right");
+        if (type === "normal") sendDirectionToESP("left");
+
+    } else {
+        status.innerText = "Invalid code!";
+        status.style.color = "red";
+    }
+}
+
