@@ -1,0 +1,13 @@
+
+traffic-solver/
+├─ backend/
+│  ├─ package.json
+│  ├─ server.js
+│  └─ README.md
+├─ frontend/
+│  ├─ index.html
+│  ├─ app.js
+│  └─ styles.css
+└─ sensor_simulator/
+   └─ simulate_sensors.py
+
