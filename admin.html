@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Vehicle Codes</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        input, select, button { margin: 10px; padding: 8px; }
+    </style>
+</head>
+
+<body>
+    <h2>Add Vehicle Code</h2>
+
+    <input id="newCode" type="text" placeholder="Enter vehicle code">
+    
+    <select id="vehicleType">
+        <option value="emergency">Emergency</option>
+        <option value="normal">Normal Vehicle</option>
+    </select>
+    
+    <button onclick="addCode()">Add Code</button>
+
+    <p id="status"></p>
+
+    <script src="script.js"></script>
+    <script>
+        function addCode() {
+            let code = document.getElementById("newCode").value.trim();
+            let type = document.getElementById("vehicleType").value;
+            let status = document.getElementById("status");
+
+            if (code === "") {
+                status.innerText = "Please enter a code!";
+                status.style.color = "red";
+                return;
+            }
+
+            validCodes[code] = type;
+            saveCodes();
+
+            status.innerText = "Code added successfully!";
+            status.style.color = "green";
+        }
+    </script>
+</body>
+</html>
+
