@@ -1,3 +1,4 @@
+node server.js
 // server.js
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -180,4 +181,5 @@ function validateCode() {
         status.style.color = "red";
     }
 }
+
 
