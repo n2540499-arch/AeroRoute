@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AeroRoute</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+
+<body>
+
+    <header>
+        <h1>AeroRoute</h1>
+        <p>Smart Traffic & Pollution Routing System</p>
+    </header>
+
+    <section class="container">
+
+        <!-- Emergency Vehicles -->
+        <div class="card">
+            <h2>Emergency Vehicles</h2>
+            <p class="direction"><strong>Direction:</strong> <span id="emergencyDir">Right</span></p>
+        </div>
+
+        <!-- Normal Vehicles -->
+        <div class="card">
+            <h2>Normal Vehicles</h2>
+            <p class="direction"><strong>Direction:</strong> <span id="normalDir">Left</span></p>
+        </div>
+
+        <!-- Live Sensor Data -->
+        <div class="card large">
+            <h2>Live Road Status</h2>
+
+            <p><strong>Road ID:</strong> <span id="roadId">-</span></p>
+            <p><strong>Congestion:</strong> <span id="congestion">-</span></p>
+            <p><strong>Pollution Level:</strong> <span id="pollution">-</span></p>
+            <p><strong>Weather:</strong> <span id="weather">-</span></p>
+
+        </div>
+
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>
