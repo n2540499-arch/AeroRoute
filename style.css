@@ -1,3 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #eef3f8;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #0077b6;
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    gap: 20px;
+    padding: 30px;
+    justify-content: center;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    width: 260px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.card.large {
+    width: 350px;
+}
+
+h2 {
+    color: #023e8a;
+}
+
+span {
+    font-weight: bold;
+}
 
 body {
     font-family: Arial, sans-serif;
@@ -39,3 +79,4 @@ h2 {
 span {
     font-weight: bold;
 }
+
