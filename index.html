@@ -1,3 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Traffic Helper</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Traffic Helper</h1>
+      <p class="subtitle">Real-time guidance — Emergency vs Normal vehicles</p>
+    </header>
+
+    <section id="status-card">
+      <div><strong>Road:</strong> <span id="road-id">road-1</span></div>
+      <div><strong>Congestion:</strong> <span id="congestion">unknown</span></div>
+      <div><strong>Last update:</strong> <span id="last-update">-</span></div>
+      <div><strong>Weather:</strong> <span id="weather">N/A</span></div>
+    </section>
+
+    <section id="controls">
+      <button id="emergency-btn">I'm Emergency</button>
+      <button id="normal-btn">I'm Normal</button>
+      <div id="advice">Advice: —</div>
+    </section>
+
+    <section id="map-sim">
+      <p>GPS: <span id="gps">unknown</span></p>
+      <p>Simulated map / route suggestions will appear here.</p>
+    </section>
+
+    <footer>
+      <small>Designed for demo. Do NOT use to control real traffic lights without authorization.</small>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,4 +125,5 @@
   <script src="app.js"></script>
 </body>
 </html>
+
 
