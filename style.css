@@ -1,3 +1,15 @@
+/* styles.css - clean simple responsive */
+body { font-family: Arial, Helvetica, sans-serif; margin:0; padding:0; background:#f5f7fb; color:#222; }
+.container { max-width:900px; margin:20px auto; padding:20px; background:white; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+header h1 { margin:0; font-size:24px; }
+.subtitle { color:#666; margin-top:6px; }
+#status-card { margin-top:18px; padding:12px; border-radius:8px; background:#f0f4ff; }
+#controls { margin-top:14px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+#controls button { padding:10px 14px; border-radius:8px; border:1px solid #ccc; cursor:pointer; }
+#advice { margin-left:12px; font-weight:bold; }
+#map-sim { margin-top:16px; padding:12px; background:#fff6f6; border-radius:8px; }
+footer { margin-top:18px; color:#888; font-size:12px; }
+@media (max-width:600px) { .container{margin:8px;} #controls{flex-direction:column; align-items:flex-start;} }
 body {
     font-family: Arial, sans-serif;
     background: #eef3f8;
@@ -79,4 +91,5 @@ h2 {
 span {
     font-weight: bold;
 }
+
 
