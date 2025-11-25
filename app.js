@@ -1,3 +1,61 @@
+// app.js
+const BACKEND = 'http://localhost:4000'; // change when deployed
+const ROAD_ID = 'road-1';
+
+const ws = new WebSocket('ws://localhost:4000');
+
+ws.addEventListener('open', () => console.log('WS open'));
+ws.addEventListener('message', (ev) => {
+  const msg = JSON.parse(ev.data);
+  if (msg.type === 'update') {
+    updateStatus(msg.data);
+  }
+  if (msg.type === 'traffic-light-cmd') {
+    console.log('Traffic light event', msg);
+  }
+});
+
+const el = (id) => document.getElementById(id);
+function updateStatus(data) {
+  el('congestion').innerText = data.congestion ? 'CONGESTED' : 'CLEAR';
+  el('last-update').innerText = new Date(data.timestamp).toLocaleTimeString();
+  el('advice').innerText = `Emergency -> ${data.recommendedFor.emergency.toUpperCase()}, Normal -> ${data.recommendedFor.normal.toUpperCase()}`;
+}
+
+async function fetchStatus() {
+  const res = await fetch(`${BACKEND}/api/status/${ROAD_ID}`);
+  const j = await res.json();
+  el('congestion').innerText = j.congestion ? 'CONGESTED' : 'CLEAR';
+  el('last-update').innerText = j.lastUpdate ? new Date(j.lastUpdate).toLocaleTimeString() : '-';
+}
+fetchStatus();
+
+// Buttons
+el('emergency-btn').addEventListener('click', () => {
+  alert('You are Emergency vehicle. Checking recommendation...');
+  // For demo, ask server for latest and show route
+  fetch(`${BACKEND}/api/status/${ROAD_ID}`).then(r=>r.json()).then(s=>{
+    const rec = s.congestion ? 'RIGHT (avoid main road)' : 'STRAIGHT';
+    el('advice').innerText = `For Emergency: go ${rec}`;
+  });
+});
+el('normal-btn').addEventListener('click', () => {
+  fetch(`${BACKEND}/api/status/${ROAD_ID}`).then(r=>r.json()).then(s=>{
+    const rec = s.congestion ? 'LEFT (detour)' : 'STRAIGHT';
+    el('advice').innerText = `For Normal: go ${rec}`;
+  });
+});
+
+// GPS simulation or real geolocation
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(pos => {
+    el('gps').innerText = `${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)}`;
+  }, err => {
+    el('gps').innerText = 'denied or unavailable (using simulator)';
+  });
+} else {
+  el('gps').innerText = 'not supported';
+}
 // Function to update UI
 function updateUI(data) {
     document.getElementById("roadId").innerText = data.roadId;
@@ -58,4 +116,5 @@ document.getElementById('requestBtn').addEventListener('click', async () => {
     document.getElementById('requestResult').innerText = 'Error sending request';
   }
 });
+
 
