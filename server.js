@@ -152,3 +152,14 @@ app.listen(PORT, () => {
   console.log(`Backend listening on ${PORT}`);
 });
 
+// Load saved vehicle codes or use default list
+let validCodes = JSON.parse(localStorage.getItem("validCodes")) || {
+    "EMG001": "emergency",
+    "CAR101": "normal"
+};
+
+// Save function
+function saveCodes() {
+    localStorage.setItem("validCodes", JSON.stringify(validCodes));
+}
+
